@@ -1,0 +1,26 @@
+---
+
+- name: conf dir creation
+  file:
+    path: /etc/orchestrator-dashboard
+    state: directory
+
+- name: set up config file
+  template:
+    src=config.json.j2 dest="{{ dest_conf }}/config.json"
+
+- name: start dash container
+  docker_container:
+    name: orchestrator-dashboard
+    image: "{{ dash_image }}"
+    state: started
+    ports:
+      - "443:5001"
+    detach: yes
+    env:
+      ENABLE_HTTPS: "True"
+    volumes:
+      - "/etc/letsencrypt/live/{{ dash_fqdn }}/privkey.pem:/certs/key.pem"
+      - "/etc/letsencrypt/live/{{ dash_fqdn }}/cert.pem:/certs/cert.pem"
+      - "{{ dest_conf }}/config.json:/app/app/config.json"
+      - "/opt/tosca-templates:/opt/tosca-templates"

@@ -1,0 +1,14 @@
+---
+
+- name: Install letsencrypt
+  apt: name=letsencrypt state=present update_cache=true
+  tags:
+    - cert
+
+- name: Create letsencrypt certificate
+  shell: letsencrypt certonly -n --standalone -m {{ dash_admin_email }} --agree-tos -d {{ dash_fqdn }}
+  args:
+    creates: /etc/letsencrypt/live/{{ dash_fqdn }}
+  tags:
+    - cert
+  

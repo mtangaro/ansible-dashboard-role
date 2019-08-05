@@ -1,0 +1,15 @@
+galaxy_info:
+  author: pietro mandreoli
+  description:  dashboard deployment
+  company: ELIXIR-ITALY
+  role_name: ansible-dashboard-role
+  license: Apache
+
+  min_ansible_version: 2.4
+
+  galaxy_tags:
+    - galaxy docker
+
+dependencies:
+  - role: indigo-dc.docker
+ 

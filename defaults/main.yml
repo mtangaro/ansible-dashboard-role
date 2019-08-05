@@ -1,0 +1,35 @@
+---
+# defaults file for dash_role
+
+dash_admin_email: admin@email.com
+
+dash_fqdn: <dashboard_hostname>
+
+dest_conf: /etc/orchestrator-dashboard
+
+dash_image: marica/orchestrator-dashboard:latest
+
+iam_client_id: <iam_client_id>
+ 
+iam_client_secret: <iam_client_secret>
+ 
+iam_base_url: <iam_url>
+
+orchestrator_url: <orchestrator_url>
+
+tosca_templates_dir: /opt/tosca-templates
+
+tosca_parameters_dir: /opt/tosca-parameters
+
+slam_url: <slam_url>
+
+cmdb_url: <cmdb_base_url>
+
+mail_server: 
+
+mail_port: 
+
+mail_sender: 
+
+admins: <admin_email>
+
