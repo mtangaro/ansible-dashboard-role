@@ -26,6 +26,14 @@ Including an example of how to use your role (for instance, with variables passe
 
     - name: Deploy dash
       hosts: dashboard
+      become: yes
+      gather_facts: false
+      pre_tasks:
+        - name: Check python is installed
+          raw:  test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+          changed_when: false
+        - name: Gathering Facts
+          setup:
       vars:
         dash_admin_email: <admin_email>
         dash_fqdn: <dashboard_hostname>
