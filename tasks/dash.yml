@@ -1,5 +1,6 @@
 ---
 
+
 - name: conf dir creation
   file:
     path: /etc/orchestrator-dashboard
@@ -8,6 +9,12 @@
 - name: set up config file
   template:
     src=config.json.j2 dest="{{ dest_conf }}/config.json"
+
+- name: git clone tosca
+  git:
+    repo: "{{ tosca_dash_conf }}"
+    dest: /opt/laniakea-dashboard-config
+  
 
 - name: start dash container
   docker_container:
@@ -23,4 +30,4 @@
       - "/etc/letsencrypt/live/{{ dash_fqdn }}/privkey.pem:/certs/key.pem"
       - "/etc/letsencrypt/live/{{ dash_fqdn }}/cert.pem:/certs/cert.pem"
       - "{{ dest_conf }}/config.json:/app/app/config.json"
-      - "/opt/tosca-templates:/opt/tosca-templates"
+      - "/opt/laniakea-dashboard-config/tosca-templates:/opt/tosca-templates"

@@ -33,3 +33,4 @@ mail_sender:
 
 admins: <admin_email>
 
+tosca_dash_conf: https://github.com/Laniakea-elixir-it/laniakea-dashboard-config.git

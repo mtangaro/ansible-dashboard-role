@@ -1,4 +1,4 @@
 ---
 # tasks file for dash_role
-#- include: cert-creation.yml
+- include: cert-creation.yml
 - include: dash.yml 
