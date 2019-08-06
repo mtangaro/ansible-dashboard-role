@@ -1,16 +1,16 @@
 ---
 
-- name: conf dir creation
+- name: configuration directory creation
   file:
     path: /etc/orchestrator-dashboard
     state: directory
 
-- name: db directory creation
+- name: database directory creation
   file:
     path: /etc/mysql
     state: directory
 
-- name: create directory if they don't exist
+- name: database directories creation if they don't exist
   file:
     path: "{{ item }}"
     state: directory
@@ -19,33 +19,33 @@
     - /etc/mysql/utils
   when: with_db == True
 
-- name: download sql file from github
+- name: download sql file from github and store it in utils
   get_url:
     url: 'https://raw.githubusercontent.com/maricaantonacci/orchestrator-dashboard/add_db/utils/orchestrator_dashboard.sql'
     dest: '/etc/mysql/utils'
   when: with_db == True
 
-- name: set up config file
+- name: set up config file for not database dash
   template:
     src=config.json.j2 dest="{{ dest_conf }}/config.json"
-  when: with_db == True
-
-- name: set up config file for dash with db
-  template:
-    src=config_db.json.j2 dest="{{ dest_conf }}/config.json"
   when: with_db == False
 
-- name: set up env db file
+- name: set up config file for dash with database 
+  template:
+    src=config_db.json.j2 dest="{{ dest_conf }}/config.json"
+  when: with_db == True
+
+- name: set up env database file
   template:
     src=mysqlenv.j2 dest="{{ dest_conf }}/mysqlenv"
   when: with_db == True
 
-- name: git clone tosca
+- name: git clone TOSCA configuration file
   git:
     repo: "{{ tosca_dash_conf }}"
     dest: /opt/laniakea-dashboard-config
  
-- name: start db container container
+- name: start database container container
   docker_container:
     name: orchestrator-dashboard-db
     image: "{{ db_image }}"
