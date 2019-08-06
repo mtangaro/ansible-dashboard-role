@@ -1,29 +1,70 @@
 ansible-dashboard-role
 ======================
 
-A brief description of the role goes here.
+This role deploy and configure the new Laniakea orchestrator Dashboard.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+The Laniakea components **CMBD**, **SLAM**, **IAM**, **CPR** and **Orchestrator** must already been installed.
+
+This ansible role support: **Ubuntu 16.04**
+Minimum ansible version: **2.4**
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- dashboard admin email
+  ``dash_admin_email:`` admin@email.com
+
+- dashboard HOSTNAME
+ ``dash_fqdn:`` <dashboard_hostname>
+
+- location configuration file
+  ``dest_conf:`` /etc/orchestrator-dashboard
+
+- Docker image
+  ``dash_image:`` marica/orchestrator-dashboard:latest
+
+- dashboard client id and secret needed for integration with IAM
+  ``iam_client_id:`` <iam_client_id>
+  ``iam_client_secret:`` <iam_client_secret>
+
+- IAM url
+  ``iam_base_url:`` <iam_url>
+
+- orchestrator base url or proxy
+  ``orchestrator_url:`` <orchestrator_url>
+
+- tosca location path
+  ``tosca_templates_dir:`` /opt/tosca-templates
+  ``tosca_parameters_dir:`` /opt/tosca-parameters
+
+- slam url
+  ``slam_url:`` <slam_url>
+
+- cmdb base url or proxy
+  ``cmdb_url:`` <cmdb_base_url>
+- mail server specification
+  ``mail_server:``
+  ``mail_port:``
+  ``mail_sender:``
+  ``admins:`` <admin_email>
+
+- Tosca dashboard configuration
+  ``tosca_dash_conf:`` https://github.com/Laniakea-elixir-it/laniakea-dashboard-config.git
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+``role: indigo-dc.docker``
+
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-
+    
     - name: Deploy dash
       hosts: dashboard
       become: yes
@@ -46,13 +87,18 @@ Including an example of how to use your role (for instance, with variables passe
         cmdb_url: <cmdb_base_url>
         admins: <admins>
       roles:
-        - role: ansible-dashboard-role 
+        - role: ansible-dashboard-role
+
+I recommend, insted of inserting all vars in the playbook, to write them in a dash.yaml file in group_var directory
+ 
 License
 -------
 
-BSD
+Apache Licence v2
+
+http://www.apache.org/licenses/LICENSE-2.0
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
