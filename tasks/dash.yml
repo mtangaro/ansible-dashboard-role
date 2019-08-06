@@ -1,6 +1,5 @@
 ---
 
-
 - name: conf dir creation
   file:
     path: /etc/orchestrator-dashboard
@@ -9,12 +8,35 @@
 - name: set up config file
   template:
     src=config.json.j2 dest="{{ dest_conf }}/config.json"
+  when: {{ with_db }} = True
+
+- name: set up config file for dash with db
+  template:
+    src=config_db.json.j2 dest="{{ dest_conf }}/config.json"
+  when: {{ with_db }} = False
+
+- name: set up env db file
+  template:
+    src=mysqlenv.j2 dest="{{ dest_conf }}/mysqlenv"
+  when: {{ with_db }} = True
 
 - name: git clone tosca
   git:
     repo: "{{ tosca_dash_conf }}"
     dest: /opt/laniakea-dashboard-config
-  
+ 
+- name: start db container container
+  docker_container:
+    name: orchestrator-dashboard-db
+    image: "{{ db_image }}"
+    state: started
+    ports:
+      - "3306:3306"
+    detach: yes
+    env_file: {{ dest_conf }}/mysqlenv
+    volumes:
+      - "$PWD/db_data:/var/lib/mysql"
+      - "$PWD/utils/:/docker-entrypoint-initdb.d"  
 
 - name: start dash container
   docker_container:
