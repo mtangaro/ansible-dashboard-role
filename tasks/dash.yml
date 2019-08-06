@@ -5,20 +5,40 @@
     path: /etc/orchestrator-dashboard
     state: directory
 
+- name: db directory creation
+  file:
+    path: /etc/mysql
+    state: directory
+
+- name: create directory if they don't exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /etc/mysql/db_data
+    - /etc/mysql/utils
+  when: with_db == True
+
+- name: download sql file from github
+  get_url:
+    url: 'https://raw.githubusercontent.com/maricaantonacci/orchestrator-dashboard/add_db/utils/orchestrator_dashboard.sql'
+    dest: '/etc/mysql/utils'
+  when: with_db == True
+
 - name: set up config file
   template:
     src=config.json.j2 dest="{{ dest_conf }}/config.json"
-  when: {{ with_db }} = True
+  when: with_db == True
 
 - name: set up config file for dash with db
   template:
     src=config_db.json.j2 dest="{{ dest_conf }}/config.json"
-  when: {{ with_db }} = False
+  when: with_db == False
 
 - name: set up env db file
   template:
     src=mysqlenv.j2 dest="{{ dest_conf }}/mysqlenv"
-  when: {{ with_db }} = True
+  when: with_db == True
 
 - name: git clone tosca
   git:
@@ -33,11 +53,12 @@
     ports:
       - "3306:3306"
     detach: yes
-    env_file: {{ dest_conf }}/mysqlenv
+    env_file: "{{ dest_conf }}/mysqlenv"
     volumes:
-      - "$PWD/db_data:/var/lib/mysql"
-      - "$PWD/utils/:/docker-entrypoint-initdb.d"  
-
+      - "{{ dest_conf }}/db_data:/var/lib/mysql"
+      - "{{ dest_conf }}/utils/:/docker-entrypoint-initdb.d"  
+  when: with_db == True
+    
 - name: start dash container
   docker_container:
     name: orchestrator-dashboard
