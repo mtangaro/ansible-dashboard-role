@@ -15,6 +15,8 @@ Minimum ansible version: **2.4**
 Role Variables
 --------------
 
+### dashboard variables
+
 - dashboard admin email
   ``dash_admin_email:`` admin@email.com
 
@@ -55,6 +57,19 @@ Role Variables
 - Tosca dashboard configuration
   ``tosca_dash_conf:`` https://github.com/Laniakea-elixir-it/laniakea-dashboard-config.git
 
+### database variables
+
+- bolean for db True (dashboard with database) False (dashboard without database)
+  ``with_db:`` True
+
+- database Docker image
+  ``db_image:`` mysql:5.7
+
+- database Docker ip 
+  ``ip_db:`` <ip_db>
+
+- database password
+  ``db_password:`` password_db
 
 Dependencies
 ------------
