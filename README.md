@@ -18,58 +18,59 @@ Role Variables
 ### dashboard variables
 
 - dashboard admin email
-  ``dash_admin_email:`` admin@email.com
+  - ``dash_admin_email:`` admin@email.com
 
 - dashboard HOSTNAME
- ``dash_fqdn:`` <dashboard_hostname>
+  - ``dash_fqdn:`` <dashboard_hostname>
 
 - location configuration file
-  ``dest_conf:`` /etc/orchestrator-dashboard
+   - ``dest_conf:`` /etc/orchestrator-dashboard
 
 - Docker image
-  ``dash_image:`` marica/orchestrator-dashboard:latest
+   - ``dash_image:`` marica/orchestrator-dashboard:latest
 
 - dashboard client id and secret needed for integration with IAM
-  ``iam_client_id:`` <iam_client_id>
-  ``iam_client_secret:`` <iam_client_secret>
+   - ``iam_client_id:`` <iam_client_id>
+   - ``iam_client_secret:`` <iam_client_secret>
 
 - IAM url
-  ``iam_base_url:`` <iam_url>
+   - ``iam_base_url:`` <iam_url>
 
 - orchestrator base url or proxy
-  ``orchestrator_url:`` <orchestrator_url>
+   - ``orchestrator_url:`` <orchestrator_url>
 
 - tosca location path
-  ``tosca_templates_dir:`` /opt/tosca-templates
-  ``tosca_parameters_dir:`` /opt/tosca-parameters
+   - ``tosca_templates_dir:`` /opt/tosca-templates
+   - ``tosca_parameters_dir:`` /opt/tosca-parameters
 
 - slam url
-  ``slam_url:`` <slam_url>
+   - ``slam_url:`` <slam_url>
 
 - cmdb base url or proxy
-  ``cmdb_url:`` <cmdb_base_url>
+   - ``cmdb_url:`` <cmdb_base_url>
+
 - mail server specification
-  ``mail_server:``
-  ``mail_port:``
-  ``mail_sender:``
-  ``admins:`` <admin_email>
+   - ``mail_server:``
+   - ``mail_port:``
+   - ``mail_sender:``
+   - ``admins:`` <admin_email>
 
 - Tosca dashboard configuration
-  ``tosca_dash_conf:`` https://github.com/Laniakea-elixir-it/laniakea-dashboard-config.git
+   - ``tosca_dash_conf:`` https://github.com/Laniakea-elixir-it/laniakea-dashboard-config.git
 
 ### database variables
 
 - bolean for db True (dashboard with database) False (dashboard without database)
-  ``with_db:`` True
+   - ``with_db:`` True
 
 - database Docker image
-  ``db_image:`` mysql:5.7
+   - ``db_image:`` mysql:5.7
 
 - database Docker ip 
-  ``ip_db:`` <ip_db>
+   - ``ip_db:`` <ip_db>
 
 - database password
-  ``db_password:`` password_db
+   - ``db_password:`` password_db
 
 Dependencies
 ------------
