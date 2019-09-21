@@ -26,7 +26,7 @@ dashboard_administrators: '[]'
 
 dashboard_tosca_template_url: https://github.com/indigo-dc/tosca-templates.git
 
-dashboard_enable_db: True
+dashboard_enable_db: False
 dashboard_mysql_image: mysql:5.7
 dashboard_db_data_dir: /data/mysql
 dashboard_db_sql_file_url: 'https://raw.githubusercontent.com/maricaantonacci/orchestrator-dashboard/add_db/utils/orchestrator_dashboard.sql'
