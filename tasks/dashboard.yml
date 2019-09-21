@@ -69,8 +69,8 @@
 
 - name: git clone TOSCA configuration file
   git:
-    repo: "{{ tosca_dash_conf }}"
-    dest: /opt/laniakea-dashboard-config
+    repo: "{{ dashboard_tosca_template_url }}"
+    dest: /opt/
   tags:
     - dashboard
 
