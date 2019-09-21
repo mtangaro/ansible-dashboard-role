@@ -1,0 +1,96 @@
+---
+- name: "Check input variables"
+  fail:
+    msg: "Change the password: you are using \"changeit\" as value for one or more variables - dashboard_mysql_root_password and dashboard_db_password"
+  when:
+    - dashboard_enable_db|bool
+    - item == "changeit"
+  with_items:
+    - "{{ dashboard_mysql_root_password }}"
+    - "{{ dashboard_db_password }}"
+  tags:
+    - dashboard
+
+- name: "create directory path to store the configuration files"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ dashboard_conf_dir }}"
+    - "{{ dashboard_conf_dir }}/utils" 
+  tags:
+    - dashboard
+
+- name: "Create mysql container env file"
+  template:
+    src: mysqlenv.j2
+    dest: "{{ dashboard_conf_dir }}/.mysqlenv"
+  when: dashboard_enable_db|bool
+  tags:
+    - dashboard
+
+- name: "download sql file from github"
+  get_url:
+    url: '{{ dashboard_db_sql_file_url }}'
+    dest: '{{ dashboard_conf_dir }}/utils'
+  when: dashboard_enable_db|bool
+  tags:
+    - dashboard
+
+- name: start database container container
+  docker_container:
+    name: orchestrator-dashboard-db
+    image: "{{ dashboard_mysql_image }}"
+    detach: true
+    state: started
+    network_mode: "host"
+    volumes:
+      - "{{ dashboard_db_data_dir }}:/var/lib/mysql"
+      - "{{ dashboard_conf_dir }}/utils/:/docker-entrypoint-initdb.d"
+    env_file: "{{ dest_conf }}/.mysqlenv"
+  when: dashboard_enable_db|bool
+  tags:
+    - dashboard
+
+- name: "create dashboard configuration file"
+  template:
+    src: config.json.j2
+    dest: "{{ dashboard_conf_dir }}/config.json"
+  tags:
+    - dashboard
+
+- name: "create dashboard configuration file for Hashicorp Vault support"
+  template:
+    src: vault-config.json.j2
+    dest: "{{ dashboard_conf_dir }}/vault-config.json"
+  when: dashboard_enable_vault|bool
+  tags:
+    - dashboard
+
+- name: git clone TOSCA configuration file
+  git:
+    repo: "{{ tosca_dash_conf }}"
+    dest: /opt/laniakea-dashboard-config
+  tags:
+    - dashboard
+
+- name: start dashboard container
+  docker_container:
+    name: orchestrator-dashboard
+    image: "{{ dashboard_image_name }}"
+    state: started
+    ports:
+      - "443:5001"
+    detach: yes
+    env:
+      ENABLE_HTTPS: "True"
+    volumes:
+      - "{{ dashboard_ssl_key_path }}:/certs/cert.pem"
+      - "{{ dashboard_ssl_cert_path }}/certs/key.pem"
+      - "{{ dashboard_conf_dir }}/config.json:/app/app/config.json"
+      - "{{ dashboard_conf_dir }}/vault-config.json:/app/app/vault-config.json"
+      - "{{ tosca_templates_dir }}:/opt/tosca-templates"
+      - "{{ tosca_parameters_dir }}:/opt/tosca-parameters"
+      - "{{ tosca_metadata_dir }}:/opt/tosca-metadata"
+  tags:
+    - dashboard

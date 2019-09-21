@@ -1,40 +1,58 @@
 ---
-# defaults file for dash_role
+# defaults file for indigopaas
 
-##dashboard admin email
-dash_admin_email: admin@email.com
-##dashboard HOSTNAME
-dash_fqdn: <dashboard_hostname>
-##location configuration file
-dest_conf: /etc/orchestrator-dashboard
-##docker image
-dash_image: marica/orchestrator-dashboard:latest
-##dashboard client id and secret needed for integration with IAM
-iam_client_id: <iam_client_id>
-iam_client_secret: <iam_client_secret>
-##IAM url
-iam_base_url: <iam_url>
-##orchestrator base url or proxy
-orchestrator_url: <orchestrator_url>
-##tosca location path
-tosca_templates_dir: /opt/tosca-templates
-tosca_parameters_dir: /opt/tosca-parameters
-##slam url
-slam_url: <slam_url>
-#cmdb base url or proxy
-cmdb_url: <cmdb_base_url>
-mail_server: 
-mail_port: 
-mail_sender: 
-admins: <admin_email>
-#tosca dashboard configuration
-tosca_dash_conf: https://github.com/Laniakea-elixir-it/laniakea-dashboard-config.git
-##bolean for db
-with_db: True
-##database image
-db_image: mysql:5.7
-## database Docker image
-ip_db: <ip_db>
-db_password: password_db
+dashboard_fqdn: dashboard.cloud.ba.infn.it
+dashboard_conf_dir: /etc/orchestrator-dashboard
+dashboard_image_name: marica/orchestrator-dashboard:latest
 
+dashboard_iam_issuer: https://iam.hostname
+dashboard_iam_client_id:
+dashboard_iam_client_secret:
+dashboard_orchestrator_url: "https://indigopaas.cloud.it/orchestrator"
+dashboard_slam_url: "https://slam.cloud.it:8443"
+dashboard_cmdb_url: "https://indigopaas.cloud.it/cmdb"
 
+# Tosca templates, parameters and metadata location path.
+dashboard_tosca_templates_dir: /opt/tosca-templates
+dashboard_tosca_parameters_dir: /opt/tosca-parameters
+dashboard_tosca_metadata_dir: /opt/tosca-metadata
+
+dashboard_notification_enable: false
+dashboard_mail_server: ''
+dashboard_mail_port: ''
+dashboard_mail_sender: ''
+
+dashboard_administrators: '[]'
+
+dashboard_tosca_template_url: https://github.com/Laniakea-elixir-it/laniakea-dashboard-config.git
+
+dashboard_enable_db: True
+dashboard_mysql_image: mysql:5.7
+dashboard_db_data_dir: /data/mysql
+dashboard_db_sql_file_url: 'https://raw.githubusercontent.com/maricaantonacci/orchestrator-dashboard/add_db/utils/orchestrator_dashboard.sql'
+
+dashboard_mysql_root_password: changeit
+dashboard_db_name: orchestrator-dashboard
+dashboard_db_user: orchestrator
+dashboard_db_password: changeit
+dashboard_db_host: localhost
+dashboard_db_port: 3306
+
+dashboard_letsencrypt_email: admin@emaill.com
+dashboard_ssl_cert_path: "/etc/letsencrypt/live/{{ dashboard_fqdn }}/cert.pem"
+dashboard_ssl_key_path: "/etc/letsencrypt/live/{{ dashboard_fqdn }}/privkey.pem"
+
+dashboard_enable_vault: False
+dashboard_vault_url: "https://{{ dashboard_fqdn }}:8200"
+dashboard_bound_audience: "orchestrator-dashboard"
+dashboard_vault_secrets_path: "secrets"
+dashboard_wrapping_token_time_duration: "1h"
+dashboard_read_policy: "read_only"
+dashboard_read_token_time_duration: "12h"
+dashboard_read_token_renewal_time_duration: "12h"
+dashboard_write_policy: "write_only"
+dashboard_write_token_time_duration: "12h"
+dashboard_write_token_renewal_time_duration: "12h"
+dashboard_delete_policy: "delete_only"
+dashboard_delete_token_time_duration: "12h"
+dashboard_delete_token_renewal_time_duration: "12h"
