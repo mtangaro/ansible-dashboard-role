@@ -86,7 +86,7 @@
       ENABLE_HTTPS: "True"
     volumes:
       - "{{ dashboard_ssl_cert_path }}:/certs/cert.pem"
-      - "{{ dashboard_ssl_key_path }}/certs/key.pem"
+      - "{{ dashboard_ssl_key_path }}:/certs/key.pem"
       - "{{ dashboard_conf_dir }}/config.json:/app/app/config.json"
       - "{{ dashboard_conf_dir }}/vault-config.json:/app/app/vault-config.json"
       - "{{ dashboard_tosca_templates_dir }}:/opt/tosca-templates"
