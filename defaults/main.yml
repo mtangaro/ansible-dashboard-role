@@ -3,7 +3,7 @@
 
 dashboard_fqdn: dashboard.cloud.ba.infn.it
 dashboard_conf_dir: /etc/orchestrator-dashboard
-dashboard_image_name: marica/orchestrator-dashboard:latest
+dashboard_image_name: "indigodatacloud/orchestrator-dashboard"
 
 dashboard_iam_issuer: https://iam.hostname
 dashboard_iam_client_id:
