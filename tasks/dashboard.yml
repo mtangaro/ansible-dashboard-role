@@ -69,8 +69,8 @@
 
 - name: git clone TOSCA configuration file
   git:
-    repo: "{{ dashboard_tosca_template_url }}"
-    dest: /opt/
+    repo: "{{ dashboard_tosca_template_repository_url }}"
+    dest: "{{ tosca_templates_dir }}"
   tags:
     - dashboard
 

@@ -24,7 +24,7 @@ dashboard_mail_sender: ''
 
 dashboard_administrators: '[]'
 
-dashboard_tosca_template_url: https://github.com/indigo-dc/tosca-templates.git
+dashboard_tosca_template_repository_url: https://github.com/indigo-dc/tosca-templates.git
 
 dashboard_enable_db: False
 dashboard_mysql_image: mysql:5.7
